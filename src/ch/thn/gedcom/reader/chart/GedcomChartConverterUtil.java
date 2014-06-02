@@ -253,22 +253,36 @@ public class GedcomChartConverterUtil {
 		
 		CivilStatus parent1CivilStatus = CivilStatus.valueOf(getInteger(parent1CsvData, Columns.CIVIL_STATUS));
 		CivilStatus parent2CivilStatus = CivilStatus.valueOf(getInteger(parent2CsvData, Columns.CIVIL_STATUS));
+		String parent1Partner = getString(parent1CsvData, Columns.PARTNER_ID);
+		String parent2Partner = getString(parent2CsvData, Columns.PARTNER_ID);
+		String parent1Id = getString(parent1CsvData, Columns.ID);
+		String parent2Id = getString(parent2CsvData, Columns.ID);
 		
-		if (parent1CivilStatus != null && parent2CivilStatus != null) {
-			//Set for both partners
-			if (parent1CivilStatus == parent2CivilStatus) {
-				//They are the same so just take one
-				civilStatus = parent1CivilStatus;
+		if (parent1Partner != null && parent2Partner != null 
+				&& parent1Partner.equals(parent2Id) && parent2Partner.equals(parent1Id)) {
+			//The two individuals are a family
+			
+			if (parent1CivilStatus != null || parent2CivilStatus != null) {
+				//At least one has a civil status
+				
+				if (parent1CivilStatus == parent2CivilStatus) {
+					//They are the same so just take one
+					civilStatus = parent1CivilStatus;
+				} else {
+					//They are not the same
+					civilStatus = CivilStatus.MIXED;
+				}
 			} else {
-				//They are not the same
-				civilStatus = CivilStatus.MIXED;
+				//Not set for both partners
+				
+				civilStatus = CivilStatus.UNKNOWN;
 			}
-		} else if (parent1CivilStatus == null && parent2CivilStatus == null) {
-			//Not set for both partners
-			civilStatus = CivilStatus.UNKNOWN;
+			
 		} else {
-			//Not set for one partner
-			civilStatus = CivilStatus.MIXED;
+			//The two individuals are not a family any more.
+			//They could both be married to new people, or divorced again, ...
+			
+			civilStatus = CivilStatus.UNKNOWN;
 		}
 		
 		
