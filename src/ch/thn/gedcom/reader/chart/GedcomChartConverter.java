@@ -137,7 +137,11 @@ public class GedcomChartConverter {
 			GedcomChartConverterUtil.createFamilyIndividualLinks(structureStorage, individualData);
 		}
 		
+		System.out.println("Cleanup...");
 		structureStorage.cleanup();
+		
+		System.out.println("Building family relations...");
+		structureStorage.buildFamilyRelations();
 		
 		System.out.println(GedcomReaderUtil.printStorageStatistics(structureStorage));
 
