@@ -442,9 +442,10 @@ public class GedcomChartConverterUtil {
 	public static void createFamilyIndividualLinks(GedcomCreatorStructureStorage structureStorage, 
 			Map<Columns, Object> individualData) {
 		
+		String individualId = getString(individualData, Columns.ID);
 		String parent1Id = getString(individualData, Columns.PARENT1_ID);
 		String parent2Id = getString(individualData, Columns.PARENT2_ID);
-		String individualId = getString(individualData, Columns.ID);
+		
 		
 		GedcomFamily familyOfParents = structureStorage.getFamilyOfParents(parent1Id, parent2Id);
 		Set<GedcomFamily> families = structureStorage.getFamiliesOfParent(individualId);
@@ -484,11 +485,17 @@ public class GedcomChartConverterUtil {
 		
 		Object o = data.get(column);
 		
-		if (o == null || o.equals("0") || o.toString().length() == 0) {
+		if (o == null) {
 			return null;
 		}
 		
-		return o.toString();
+		String s = o.toString();
+		
+		if (s.equals("0") || s.length() == 0) {
+			return null;
+		}
+		
+		return s;
 	}
 	
 	/**
