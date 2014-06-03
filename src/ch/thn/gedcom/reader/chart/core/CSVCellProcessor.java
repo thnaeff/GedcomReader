@@ -16,13 +16,9 @@
  */
 package ch.thn.gedcom.reader.chart.core;
 
-import java.util.regex.Pattern;
-
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
-
-import ch.thn.util.StringUtil;
 
 /**
  * This cell processor just does some cleanup of the cell content
@@ -32,9 +28,7 @@ import ch.thn.util.StringUtil;
  *
  */
 public class CSVCellProcessor extends CellProcessorAdaptor {
-	
-	private Pattern multipleSpaces = Pattern.compile("[ ]+");
-	
+		
 	private ChartValuePreProcessor valuePreProcessor = null;
 	
 	private String columnName = null;
@@ -101,25 +95,6 @@ public class CSVCellProcessor extends CellProcessorAdaptor {
 		if (valuePreProcessor != null) {
 			value = valuePreProcessor.process(value, columnName);
 		}
-		
-		if (value == null) {
-			return next.execute(value, context);
-		}
-		
-		if (value instanceof String) {
-			String s = (String)value;
-			
-			//String cleanup
-			s = StringUtil.replaceAll(multipleSpaces, s, " ");
-			s = s.trim();
-			
-//			if (s.length() == 0) {
-//				return next.execute(null, context);
-//			}
-			
-			return next.execute(s, context);
-		}
-		
 		
 		return next.execute(value, context);
 	}
