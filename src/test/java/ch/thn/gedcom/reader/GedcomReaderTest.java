@@ -14,7 +14,7 @@
  * limitations under the License.
  * 
  */
-package ch.thn.gedcom.reader.test;
+package ch.thn.gedcom.reader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
